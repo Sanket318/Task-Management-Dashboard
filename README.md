@@ -19,6 +19,7 @@ HTML5 Drag and Drop API
 Fetch API for HTTP requests
 
 Prerequisites
+
 Before running this project, make sure you have the following installed:
 
 Node.js (v14.0.0 or higher)
