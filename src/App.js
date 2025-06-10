@@ -1,3 +1,5 @@
+// App.jsx - Main component
+
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -27,7 +29,7 @@ function App() {
       }
       let data = await response.json();
       
-      // Transform data to fit our schema 
+      // Transform data to fit our schema (since jsonplaceholder doesn't have status field)
       data = data.slice(0, 15).map(item => ({
         id: item.id,
         title: item.title,
@@ -60,7 +62,8 @@ function App() {
       
       const data = await response.json();
       
-      // For jsonplaceholder, it doesn't actually save our data but returns a response with an id
+      // For jsonplaceholder, it doesn't actually save our data
+      // but returns a response with an id
       const taskWithId = {
         ...newTask,
         id: data.id || tasks.length + 1
@@ -71,6 +74,26 @@ function App() {
     } catch (err) {
       setError(err.message);
       console.error('Error adding task:', err);
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      // API call to delete task
+      const response = await fetch(`${API_URL}/${taskId}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete task');
+      }
+      
+      // Remove task from state
+      setTasks(tasks.filter(task => task.id !== taskId));
+    } catch (err) {
+      setError(err.message);
+      console.error('Error deleting task:', err);
+      throw err; // Re-throw to handle in DeleteButton component
     }
   };
 
@@ -95,7 +118,8 @@ function App() {
         throw new Error('Failed to update task status');
       }
       
-      // Note: jsonplaceholder doesn't actually update the data but would return a response in a real API
+      // Note: jsonplaceholder doesn't actually update the data
+      // but would return a response in a real API
     } catch (err) {
       // Revert the optimistic update if API call fails
       setError(err.message);
@@ -119,11 +143,29 @@ function App() {
   };
 
   if (loading) {
-    return <div className="container text-center my-5"><div className="spinner-border" role="status"></div></div>;
+    return (
+      <div className="container text-center my-5">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="container alert alert-danger my-5">Error: {error}</div>;
+    return (
+      <div className="container my-5">
+        <div className="alert alert-danger" role="alert">
+          <strong>Error:</strong> {error}
+          <button 
+            className="btn btn-outline-danger ms-3" 
+            onClick={fetchTasks}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -147,6 +189,7 @@ function App() {
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
+            onDelete={deleteTask}
           />
         ))}
       </div>
