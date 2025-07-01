@@ -1,5 +1,3 @@
-// App.jsx - Main component
-
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -77,25 +75,6 @@ function App() {
     }
   };
 
-  const deleteTask = async (taskId) => {
-    try {
-      // API call to delete task
-      const response = await fetch(`${API_URL}/${taskId}`, {
-        method: 'DELETE',
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to delete task');
-      }
-      
-      // Remove task from state
-      setTasks(tasks.filter(task => task.id !== taskId));
-    } catch (err) {
-      setError(err.message);
-      console.error('Error deleting task:', err);
-      throw err; // Re-throw to handle in DeleteButton component
-    }
-  };
 
   const updateTaskStatus = async (id, newStatus) => {
     try {
@@ -189,7 +168,6 @@ function App() {
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onDelete={deleteTask}
           />
         ))}
       </div>

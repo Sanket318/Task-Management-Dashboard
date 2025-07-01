@@ -1,9 +1,7 @@
-// components/TaskColumn.jsx
-
 import React from 'react';
 import TaskCard from './TaskCard';
 
-function TaskColumn({ status, tasks, onDragStart, onDragOver, onDrop, onDelete }) {
+function TaskColumn({ status, tasks, onDragStart, onDragOver, onDrop }) {
   return (
     <div 
       className="col-md-4" 
@@ -26,7 +24,6 @@ function TaskColumn({ status, tasks, onDragStart, onDragOver, onDrop, onDelete }
                 key={task.id} 
                 task={task} 
                 onDragStart={onDragStart}
-                onDelete={onDelete}
               />
             ))
           )}

@@ -1,9 +1,6 @@
-// components/TaskCard.jsx
-
 import React from 'react';
-import DeleteButton from './DeleteButton';
 
-function TaskCard({ task, onDragStart, onDelete }) {
+function TaskCard({ task, onDragStart }) {
   // Determine badge color based on status
   const getBadgeColor = (status) => {
     switch (status) {
@@ -27,11 +24,6 @@ function TaskCard({ task, onDragStart, onDelete }) {
       <div className="card-body">
         <div className="d-flex justify-content-between align-items-start mb-2">
           <h6 className="card-title mb-0 flex-grow-1">{task.title}</h6>
-          <DeleteButton 
-            taskId={task.id}
-            taskTitle={task.title}
-            onDelete={onDelete}
-          />
         </div>
         
         {task.description && (
